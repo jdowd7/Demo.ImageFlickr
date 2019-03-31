@@ -11,12 +11,12 @@ import XCTest
 
 class ImageSearchResultTest: XCTestCase {
     
-    var testControl_ImgSearchResult : ImageSearchResult?
+    var testControl_ImgSearchResult_1 : ImageSearchResult?
     var testControl_ImgSearchResultUrl : URL?
     
     override func setUp() {
         super.setUp()
-        self.testControl_ImgSearchResult = ImageSearchResult(id: "1", owner: "1", secret: "1", server: "1", farm: "1", title: "1", ispublic: "1", isfriend: "1", isfamily: "1", keyword: "1")
+        self.testControl_ImgSearchResult_1 = ImageSearchResult(id: "1", owner: "1", secret: "1", server: "1", farm: "1", title: "1", ispublic: "1", isfriend: "1", isfamily: "1", keyword: "1")
         self.testControl_ImgSearchResultUrl = URL(string: "https://farm1.staticflickr.com/1/1_1.jpg")
     }
     
@@ -30,6 +30,21 @@ class ImageSearchResultTest: XCTestCase {
         let imgSearchResult = ImageSearchResult(id: "1", owner: "1", secret: "1", server: "1", farm: "1", title: "1", ispublic: "1", isfriend: "1", isfamily: "1", keyword: "1")
         // Assert
         XCTAssert(imgSearchResult.url == testControl_ImgSearchResultUrl)
+    }
+    
+    func testImageSearchResult_FetchImage_ShouldReturnValidImage() {
+        // Arrange
+        let imgSearchResult = ImageSearchResult(id: "33626188268", owner: "160449865@N05", secret: "0a5c90af6a", server: "7890", farm: "8", title: "Dexter by the Platte River", ispublic: "1", isfriend: "0", isfamily: "", keyword: "1")
+        let expect = expectation(description: "downloading img")
+        
+        // Act
+        imgSearchResult.fetchImage(url: imgSearchResult.url!) { success in
+            expect.fulfill()
+        }
+        
+        // Assert
+        waitForExpectations(timeout: 10)
+        XCTAssert(imgSearchResult.image != nil)
     }
     
 }

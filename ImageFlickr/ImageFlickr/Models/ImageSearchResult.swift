@@ -23,6 +23,7 @@ class ImageSearchResult {
     var isfamily: String
     var keyword: String
     var url: URL?
+    var image: UIImage?
     
     // MARK: Constructor
     init(id: String, owner: String, secret: String, server: String, farm: String, title: String, ispublic: String, isfriend: String, isfamily: String, keyword: String, url: String = "") {
@@ -37,12 +38,29 @@ class ImageSearchResult {
         self.isfamily = isfamily
         self.keyword = keyword
         self.url = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "")
+        fetchImage(url: self.url!) { success in
+            
+        }
     }
     
     // MARK: Instance Methods
     func createImageUrl(imgId: String, farmId: String, secretId: String, serverId: String, mstzb: String) -> URL {
         //get pic url: farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         return URL(string: String(format: "https://farm%@.%@/%@/%@_%@.jpg", farmId, AppConstants.FlickrUrls.k_StaticFlickrBaseUrl, serverId, imgId,secretId))!
+    }
+    
+    private func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    func fetchImage(url: URL, completion: (_ success: Bool) -> Void) {
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            DispatchQueue.main.async() {
+                self.image = UIImage(data: data)
+            }
+        }
     }
     
     

@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		236B2DE3225090010051775A /* NetworkRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B2DE2225090010051775A /* NetworkRestClient.swift */; };
+		236B2DE3225090010051775A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B2DE2225090010051775A /* NetworkManager.swift */; };
 		236B2DE62250B0F50051775A /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B2DE52250B0F50051775A /* ImageService.swift */; };
+		236B2DE92250C8BE0051775A /* ImageDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B2DE82250C8BE0051775A /* ImageDataStore.swift */; };
 		237DAD96225010EC00ED3477 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DAD95225010EC00ED3477 /* AppDelegate.swift */; };
 		237DAD98225010EC00ED3477 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DAD97225010EC00ED3477 /* ViewController.swift */; };
 		237DAD9B225010EC00ED3477 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 237DAD99225010EC00ED3477 /* Main.storyboard */; };
@@ -32,8 +33,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		236B2DE2225090010051775A /* NetworkRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRestClient.swift; sourceTree = "<group>"; };
+		236B2DE2225090010051775A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		236B2DE52250B0F50051775A /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		236B2DE82250C8BE0051775A /* ImageDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataStore.swift; sourceTree = "<group>"; };
 		237DAD92225010EC00ED3477 /* ImageFlickr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFlickr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		237DAD95225010EC00ED3477 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		237DAD97225010EC00ED3477 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,7 +79,7 @@
 		236B2DE122508F9A0051775A /* Clients */ = {
 			isa = PBXGroup;
 			children = (
-				236B2DE2225090010051775A /* NetworkRestClient.swift */,
+				236B2DE2225090010051775A /* NetworkManager.swift */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				237DADB62250228000ED3477 /* ImageSearchResult.swift */,
+				236B2DE82250C8BE0051775A /* ImageDataStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -253,10 +256,11 @@
 			files = (
 				237DAD98225010EC00ED3477 /* ViewController.swift in Sources */,
 				237DADB72250228000ED3477 /* ImageSearchResult.swift in Sources */,
-				236B2DE3225090010051775A /* NetworkRestClient.swift in Sources */,
+				236B2DE3225090010051775A /* NetworkManager.swift in Sources */,
 				237DAD96225010EC00ED3477 /* AppDelegate.swift in Sources */,
 				237DADBC2250418D00ED3477 /* AppConstants.swift in Sources */,
 				236B2DE62250B0F50051775A /* ImageService.swift in Sources */,
+				236B2DE92250C8BE0051775A /* ImageDataStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

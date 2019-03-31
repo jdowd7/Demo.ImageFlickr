@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class NetworkRestClient {
+class NetworkManager {
     
     // MARK: Properties
     var urlRequest: URLRequest
@@ -25,7 +25,7 @@ class NetworkRestClient {
     }
     
     // MARK: Instance Methods
-    func executeRequest(finished: @escaping (_ json: [String: Any]) -> Void) {
+    func executeJsonRequest(finished: @escaping (_ json: [String: Any]) -> Void) {
         let session = URLSession.shared
         let task = session.dataTask(with: urlRequest, completionHandler: {(data, response, error) in
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -49,6 +49,10 @@ class NetworkRestClient {
         })
         task.resume()
     }
+    
+
+    
+
 }
 
 
