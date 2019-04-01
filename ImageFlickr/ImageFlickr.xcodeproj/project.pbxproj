@@ -113,6 +113,7 @@
 		237DAD94225010EC00ED3477 /* ImageFlickr */ = {
 			isa = PBXGroup;
 			children = (
+				23D8331822517F08006EE05C /* Configuration */,
 				237DADBA2250413200ED3477 /* Common */,
 				237DADB52250162F00ED3477 /* Models */,
 				237DAD95225010EC00ED3477 /* AppDelegate.swift */,
@@ -151,6 +152,13 @@
 				237DADBB2250418D00ED3477 /* AppConstants.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		23D8331822517F08006EE05C /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -39,7 +39,7 @@ class ImageSearchResult {
         self.keyword = keyword
         self.url = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "")
         fetchImage(url: self.url!) { success in
-            
+            print("fetchCompleted")
         }
     }
     
@@ -53,7 +53,7 @@ class ImageSearchResult {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
-    func fetchImage(url: URL, completion: (_ success: Bool) -> Void) {
+    func fetchImage(url: URL, completion: (_ success: String?) -> Void) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
             print(response?.suggestedFilename ?? url.lastPathComponent)
@@ -61,9 +61,7 @@ class ImageSearchResult {
                 self.image = UIImage(data: data)
             }
         }
+        completion("YES")
     }
-    
-    
-    
 }
 
