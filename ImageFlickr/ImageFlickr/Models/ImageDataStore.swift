@@ -15,7 +15,7 @@ class ImageDataStore {
     var imageSearchJSON : Dictionary<String, Any>
     var imageSearchResultCache: [ImageSearchResult]
 
-    private init() {
+    init() {
         self.imageSearchResultCache = [ImageSearchResult]()
         self.imageSearchJSON = Dictionary<String, Any>()
     }
@@ -23,7 +23,7 @@ class ImageDataStore {
     /* Search Photos by Keyword Docs
      api.flickr.com/services/rest/
      ?method=flickr.photos.search
-     &api_key=b35fda5e4acbd587ae9ec6ffbe9ce41c
+     &api_key=1508443e49213ff84d566777dc211f2a
      &tags=dogs
      &tag_mode=
      &per_page=90
@@ -46,12 +46,11 @@ class ImageDataStore {
     }
     
     
-    func processImages(searchUrl: URL, imageSearchResult: [ImageSearchResult]) -> Void {
-        
-        let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: nil, headers: nil)
+    func executeSearch(searchUrl: URL, finished: @escaping (_ jsonResult: [String: Any]) -> Void) {
+        let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: [String: String](), headers: [String: String]())
         networkManager.executeJsonRequest { (json) -> () in
             self.imageSearchJSON = json
+            finished(json)
         }
-        
     }
 }

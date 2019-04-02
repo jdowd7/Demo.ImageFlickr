@@ -17,7 +17,7 @@ class ImageSearchResultTest: XCTestCase {
     override func setUp() {
         super.setUp()
         self.testControl_ImgSearchResult_1 = ImageSearchResult(id: "1", owner: "1", secret: "1", server: "1", farm: "1", title: "1", ispublic: "1", isfriend: "1", isfamily: "1", keyword: "1")
-        self.testControl_ImgSearchResultUrl = URL(string: "https://farm1.staticflickr.com/1/1_1.jpg")
+        self.testControl_ImgSearchResultUrl = URL(string: "https://farm1.staticflickr.com/1/1_1.png")
     }
     
     override func tearDown() {
@@ -29,7 +29,7 @@ class ImageSearchResultTest: XCTestCase {
         // Arrange & Act
         let imgSearchResult = ImageSearchResult(id: "1", owner: "1", secret: "1", server: "1", farm: "1", title: "1", ispublic: "1", isfriend: "1", isfamily: "1", keyword: "1")
         // Assert
-        XCTAssert(imgSearchResult.url == testControl_ImgSearchResultUrl)
+        XCTAssert(imgSearchResult.photoUrl == testControl_ImgSearchResultUrl)
     }
     
     func testImageSearchResult_FetchImage_ShouldReturnValidImage() {
@@ -38,18 +38,15 @@ class ImageSearchResultTest: XCTestCase {
         let expect = self.expectation(description: "imageFetch")
         
         // Act
-        imgSearchResult.fetchImage(url: imgSearchResult.url!) { (success) -> () in
-            if success == "YES" {
-                print("hit completion handler")
-            }
+        imgSearchResult.fetchPhoto(url: imgSearchResult.photoUrl!) { (photoData) in
+            imgSearchResult.photoImage = UIImage(data: photoData)
             expect.fulfill()
         }
         
         // Assert
         //wait(for: [expect], timeout: 7.0)
         waitForExpectations(timeout: 5.0, handler: nil)
-        //XCTAssert(imgSearchResult.image != nil) // fails due to handler and expectation fulfillment, but image is pulled
-        XCTAssertTrue(true)
+        XCTAssert(imgSearchResult.photoImage != nil) // fails due to handler and expectation fulfillment, but image is pulled
     }
     
 }

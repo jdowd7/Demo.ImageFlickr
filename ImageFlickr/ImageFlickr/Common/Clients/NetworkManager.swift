@@ -15,11 +15,11 @@ class NetworkManager {
     var urlRequest: URLRequest
     
     // MARK: Constructor
-    init(url: URL, httpMethod: String, params: Dictionary<String, String>?, headers: Dictionary<String, String>?) {
+    init(url: URL, httpMethod: String, params: Dictionary<String, String>, headers: Dictionary<String, String>) {
         urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = httpMethod
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params ?? Dictionary<String, String>(), options: [])
-        for (key, value) in headers! {
+        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        for (key, value) in headers {
             urlRequest.addValue(key, forHTTPHeaderField: value)
         }
     }
