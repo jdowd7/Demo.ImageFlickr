@@ -35,7 +35,7 @@ class ImageDataStoreTest: XCTestCase {
         
         //Assert
         waitForExpectations(timeout: 5.0, handler: nil)
-        XCTAssert((self.imageDataStore_TestInstance?.imageSearchJSON?.photo.count)! > 0)
+        XCTAssert(self.imageDataStore_TestInstance?.imageSearchJSON != nil)
     }
     
     func testImageDataStore_executeSearch_ShouldPopulateCache() {
@@ -50,7 +50,7 @@ class ImageDataStoreTest: XCTestCase {
         }
         
         //Assert
-        waitForExpectations(timeout: 5.0, handler: nil)
+        waitForExpectations(timeout: 90, handler: nil)
         XCTAssert((self.imageDataStore_TestInstance?.imageSearchResultCache?.count)! > 0)
     }
 }

@@ -15,7 +15,7 @@ class ImageDataStore {
     var decoder: JSONDecoder
     var searchKeyword: String
     //var imageSearchJSON: Dictionary<String, Any>?
-    var imageSearchJSON: Photos?
+    var imageSearchJSON: PhotoModel?
     var imageSearchResultCache: [ImageSearchResult]?
     var searchPages: Int?
     var searchTotal: String?
@@ -57,7 +57,7 @@ class ImageDataStore {
     }
     
     
-    func executeSearch(searchUrl: URL, finished: @escaping (_ jsonResult: Photos) -> Void) {
+    func executeSearch(searchUrl: URL, finished: @escaping (_ jsonResult: PhotoModel) -> Void) {
         let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: [String: String](), headers: [String: String]())
         networkManager.executeJsonRequest { (json) -> () in
             let jsonPhotos = json
@@ -67,26 +67,19 @@ class ImageDataStore {
     }
     
     //func processImages(jsonPhotosList: [String: Any]) -> Void {
-     func processImages(jsonPhotosList: Photos) -> Void {
-        /*
-        self.searchPages = jsonPhotosList["pages"] as? Int
-        self.searchTotal = jsonPhotosList["total"] as? Int
+     func processImages(jsonPhotosList: PhotoModel) -> Void {
+       
+        self.searchPages = jsonPhotosList.photos?.pages
+        self.searchTotal = jsonPhotosList.photos?.total
         
-        let jsonPhotoList = jsonPhotosList["photos"] as? [[String: Any]]
-         */
-        self.searchPages = jsonPhotosList.pages
-        self.searchTotal = jsonPhotosList.total
-        
-        //let jsonPhotoList = jsonPhotosList["photos"] as? [[String: Any]]
-        let jsonPhotoList = jsonPhotosList.photo
+        let jsonPhotoList = (jsonPhotosList.photos?.photo)!
         
         self.imageSearchResultCache = [ImageSearchResult]()
-        for jsonPhoto in jsonPhotoList {
-            //let photoModel = try decoder.decode(PhotoModel.self, from: Data(jsonPhoto))
-            let photoModel = PhotoModel(json: jsonPhoto)
-            self.imageSearchResultCache?.append(ImageSearchResult(id: photoModel!.id, owner: photoModel!.owner, secret: photoModel!.secret, server: photoModel!.server, farm: photoModel!.farm, title: photoModel!.title, ispublic: photoModel!.ispublic, isfriend: photoModel!.isfriend, isfamily: photoModel!.isfamily, keyword: self.searchKeyword))
-        }
         
+        for jsonPhoto in jsonPhotoList {
+            self.imageSearchResultCache?.append(ImageSearchResult(id: jsonPhoto.id!, owner: jsonPhoto.owner!, secret: jsonPhoto.secret!, server: jsonPhoto.server!, farm: jsonPhoto.farm!, title: jsonPhoto.title!, ispublic: jsonPhoto.ispublic!, isfriend: jsonPhoto.isfriend!, isfamily: jsonPhoto.isfamily!, keyword: self.searchKeyword))
+        }
+        print("Cache Contains: %@", self.imageSearchResultCache?.count)
     }
     
     
