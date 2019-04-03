@@ -12,12 +12,21 @@ import Foundation
 class ImageDataStore {
     
     static let shared = ImageDataStore()
-    var imageSearchJSON : Dictionary<String, Any>
-    var imageSearchResultCache: [ImageSearchResult]
-
+    var decoder: JSONDecoder
+    var searchKeyword: String
+    //var imageSearchJSON: Dictionary<String, Any>?
+    var imageSearchJSON: Photos?
+    var imageSearchResultCache: [ImageSearchResult]?
+    var searchPages: Int?
+    var searchTotal: String?
+    
     init() {
+        self.decoder = JSONDecoder()
+        self.searchKeyword = ""
         self.imageSearchResultCache = [ImageSearchResult]()
-        self.imageSearchJSON = Dictionary<String, Any>()
+        //self.imageSearchJSON = Photos
+        self.searchPages = 0
+        self.searchTotal = ""
     }
     
     /* Search Photos by Keyword Docs
@@ -32,6 +41,8 @@ class ImageDataStore {
      &nojsoncallback=1
      */
     func setupSearchUrl(searchKeyword: String) -> String {
+        self.searchKeyword = searchKeyword
+        
         let baseUrl = String(format: "@%", AppConstants.FlickrUrls.k_BaseServiceUrl)
         let methodParam = String(format: "?@%=@%", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
         let apiKeyParam = String(format: "&api_key=@%", AppConstants.FlickrKeys.k_api_key)
@@ -46,11 +57,37 @@ class ImageDataStore {
     }
     
     
-    func executeSearch(searchUrl: URL, finished: @escaping (_ jsonResult: [String: Any]) -> Void) {
+    func executeSearch(searchUrl: URL, finished: @escaping (_ jsonResult: Photos) -> Void) {
         let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: [String: String](), headers: [String: String]())
         networkManager.executeJsonRequest { (json) -> () in
-            self.imageSearchJSON = json
-            finished(json)
+            let jsonPhotos = json
+            self.imageSearchJSON = jsonPhotos
+            self.processImages(jsonPhotosList: jsonPhotos)
         }
     }
+    
+    //func processImages(jsonPhotosList: [String: Any]) -> Void {
+     func processImages(jsonPhotosList: Photos) -> Void {
+        /*
+        self.searchPages = jsonPhotosList["pages"] as? Int
+        self.searchTotal = jsonPhotosList["total"] as? Int
+        
+        let jsonPhotoList = jsonPhotosList["photos"] as? [[String: Any]]
+         */
+        self.searchPages = jsonPhotosList.pages
+        self.searchTotal = jsonPhotosList.total
+        
+        //let jsonPhotoList = jsonPhotosList["photos"] as? [[String: Any]]
+        let jsonPhotoList = jsonPhotosList.photo
+        
+        self.imageSearchResultCache = [ImageSearchResult]()
+        for jsonPhoto in jsonPhotoList {
+            //let photoModel = try decoder.decode(PhotoModel.self, from: Data(jsonPhoto))
+            let photoModel = PhotoModel(json: jsonPhoto)
+            self.imageSearchResultCache?.append(ImageSearchResult(id: photoModel!.id, owner: photoModel!.owner, secret: photoModel!.secret, server: photoModel!.server, farm: photoModel!.farm, title: photoModel!.title, ispublic: photoModel!.ispublic, isfriend: photoModel!.isfriend, isfamily: photoModel!.isfamily, keyword: self.searchKeyword))
+        }
+        
+    }
+    
+    
 }

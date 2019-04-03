@@ -16,11 +16,11 @@ class ImageSearchResult {
     var owner: String
     var secret: String
     var server: String
-    var farm: String
+    var farm: Int
     var title: String
-    var ispublic: String
-    var isfriend: String
-    var isfamily: String
+    var ispublic: Int
+    var isfriend: Int
+    var isfamily: Int
     var keyword: String
     var photoUrl: URL?
     var thumbnailPhotoUrl: URL?
@@ -28,7 +28,7 @@ class ImageSearchResult {
     var photoThumbImage: UIImage?
     
     // MARK: Constructor
-    init(id: String, owner: String, secret: String, server: String, farm: String, title: String, ispublic: String, isfriend: String, isfamily: String, keyword: String, url: String = "") {
+    init(id: String, owner: String, secret: String, server: String, farm: Int, title: String, ispublic: Int, isfriend: Int, isfamily: Int, keyword: String, url: String = "") {
         self.id = id
         self.owner = owner
         self.secret = secret
@@ -52,9 +52,9 @@ class ImageSearchResult {
     }
     
     // MARK: Instance Methods
-    func createImageUrl(imgId: String, farmId: String, secretId: String, serverId: String, mstzb: String) -> URL {
+    func createImageUrl(imgId: String, farmId: Int, secretId: String, serverId: String, mstzb: String) -> URL {
         //get pic url: farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-        return URL(string: String(format: "https://farm%@.%@/%@/%@_%@_%@.png", farmId, AppConstants.FlickrUrls.k_StaticFlickrBaseUrl, serverId, imgId, secretId, mstzb))!
+        return URL(string: String(format: "https://farm%@.%@/%@/%@_%@_%@.png", String(farmId), AppConstants.FlickrUrls.k_StaticFlickrBaseUrl, serverId, imgId, secretId, mstzb))!
     }
     
     private func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
