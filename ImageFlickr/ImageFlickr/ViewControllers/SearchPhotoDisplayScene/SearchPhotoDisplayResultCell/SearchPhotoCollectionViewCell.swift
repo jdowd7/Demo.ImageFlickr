@@ -10,8 +10,8 @@ import UIKit
 
 class SearchPhotoCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var spcImage: UIImageView!
-    @IBOutlet weak var spcTextLabel: UILabel!
+    @IBOutlet var spcImage: UIImageView!
+    @IBOutlet var spcTextLabel: UILabel!
     
     
     override func awakeFromNib() {
@@ -19,7 +19,17 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     public func setUp(model: ImageSearchResult) {
+        
         spcImage.image = model.photoThumbImage
         spcTextLabel.text = model.title
+        spcTextLabel.textColor = .black
+        /*
+            DispatchQueue.global(qos: .default).async { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                self!.spcImage.image = model.photoThumbImage
+                self!.spcTextLabel.text = model.title
+            }
+        }
+        */
     }
 }

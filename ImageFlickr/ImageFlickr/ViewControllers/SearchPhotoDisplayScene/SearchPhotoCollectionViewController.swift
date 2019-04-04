@@ -8,11 +8,12 @@
 
 import UIKit
 
-private let reuseIdentifier = "imageSearchResultCell"
 
-class SearchPhotoCollectionViewController: UICollectionViewController, UITextFieldDelegate {
+
+class SearchPhotoCollectionViewController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
     
     var imageSearchCache : [ImageSearchResult] = []
+    private let reuseIdentifier = "imageSearchResultCell"
     
     @IBOutlet weak var searchField: UITextField!
     
@@ -71,6 +72,7 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageSearchResultCell", for: indexPath) as! SearchPhotoCollectionViewCell
         cell.setUp(model: imageSearchCache[indexPath.row])
+        cell.backgroundColor = .lightGray
         
         return cell
     }
@@ -105,6 +107,32 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     
     }
     */
+    
+    // MARK: UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        //let imageWidth = view.frame.width - (UIEdgeInsets(top: 54.0, left: 24.00, bottom: 54.00, right: 24.0).left * (2 + 1))
+        //let widthPerItem = 150 / 2
+        
+        return CGSize(width: 150, height: 180)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0).left
+    }
+    
+    // MARK: TextView Delegates
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
