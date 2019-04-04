@@ -42,25 +42,31 @@ class ImageSearchResult {
         self.photoUrl = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "")
         self.thumbnailPhotoUrl = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "q")
         
-        fetchPhoto(url: self.photoUrl!, finished: { photoData in
-            self.photoImage = UIImage(data: photoData)
-        })
         
-        fetchPhoto(url: self.thumbnailPhotoUrl!, finished: { photoData in
+        fetchPhoto(url: self.photoUrl!) { (photoData) in
+            self.photoImage = UIImage(data: photoData)
+        }
+        
+        //self.photoImage = UIImage(data: fetchPhoto(url: self.photoUrl!) as Data)
+        
+        fetchPhoto(url: self.thumbnailPhotoUrl!) { (photoData) in
             self.photoThumbImage = UIImage(data: photoData)
-        })
+        }
+        
+        //self.photoThumbImage = UIImage(data: fetchPhoto(url: self.thumbnailPhotoUrl!) as Data)
     }
     
     // MARK: Instance Methods
     func createImageUrl(imgId: String, farmId: Int, secretId: String, serverId: String, mstzb: String) -> URL {
         //get pic url: farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-        return URL(string: String(format: "https://farm%@.%@/%@/%@_%@_%@.png", String(farmId), AppConstants.FlickrUrls.k_StaticFlickrBaseUrl, serverId, imgId, secretId, mstzb))!
+        return URL(string: String(format: "https://farm%@.%@/%@/%@_%@%@.jpg", String(farmId), AppConstants.FlickrUrls.k_StaticFlickrBaseUrl, serverId, imgId, secretId, (mstzb.isEmpty ? "" : String(format: "_%@", mstzb))))!
     }
     
     private func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
+    // async
     func fetchPhoto(url: URL, finished: @escaping (_ photoData: Data) -> Void) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
@@ -69,6 +75,12 @@ class ImageSearchResult {
                 finished(data)
             }
         }
+    }
+    
+    // sync
+    func fetchPhoto(url: URL) -> NSData {
+        guard let data = NSData(contentsOf: url) else { return NSData() }
+        return data
     }
 }
 

@@ -43,15 +43,15 @@ class ImageDataStore {
     func setupSearchUrl(searchKeyword: String) -> String {
         self.searchKeyword = searchKeyword
         
-        let baseUrl = String(format: "@%", AppConstants.FlickrUrls.k_BaseServiceUrl)
-        let methodParam = String(format: "?@%=@%", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
-        let apiKeyParam = String(format: "&api_key=@%", AppConstants.FlickrKeys.k_api_key)
-        let tagsParam = String(format: "&@%=@%", AppConstants.FlickrApiParams.k_tags, searchKeyword)
-        let tagModeParam = String(format: "&@%=@%", AppConstants.FlickrApiParams.k_tag_mode, "")
-        let perPageParam = String(format: "&@%=@%", AppConstants.FlickrApiParams.k_per_page, AppConstants.FlickrApiParams.k_per_page_value)
-        let pageParam = String(format: "&@%=@%", AppConstants.FlickrApiParams.k_page, AppConstants.FlickrApiParams.k_page_value)
-        let formatParam = String(format: "&@%=@%", AppConstants.FlickrApiParams.k_format, AppConstants.FlickrApiParams.k_format_json)
-        let noJsonCallbackParam = String(format: "&@%=@%", AppConstants.FlickrApiParams.k_nojsoncallback, AppConstants.FlickrApiParams.k_nojsoncallback_yes)
+        let baseUrl = String(format: "%@", AppConstants.FlickrUrls.k_BaseServiceUrl)
+        let methodParam = String(format: "?%@=%@", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
+        let apiKeyParam = String(format: "&api_key=%@", AppConstants.FlickrKeys.k_api_key)
+        let tagsParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tags, searchKeyword)
+        let tagModeParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tag_mode, "")
+        let perPageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_per_page, AppConstants.FlickrApiParams.k_per_page_value)
+        let pageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_page, AppConstants.FlickrApiParams.k_page_value)
+        let formatParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_format, AppConstants.FlickrApiParams.k_format_json)
+        let noJsonCallbackParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_nojsoncallback, AppConstants.FlickrApiParams.k_nojsoncallback_yes)
         
         return baseUrl + methodParam + apiKeyParam + tagsParam + tagModeParam + perPageParam + pageParam + formatParam + noJsonCallbackParam
     }
@@ -62,12 +62,13 @@ class ImageDataStore {
         networkManager.executeJsonRequest { (json) -> () in
             let jsonPhotos = json
             self.imageSearchJSON = jsonPhotos
-            self.processImages(jsonPhotosList: jsonPhotos)
+            let processedResults = self.processImages(jsonPhotosList: jsonPhotos)
+            finished(processedResults)
         }
     }
     
     //func processImages(jsonPhotosList: [String: Any]) -> Void {
-     func processImages(jsonPhotosList: PhotoModel) -> Void {
+     func processImages(jsonPhotosList: PhotoModel) -> [ImageSearchResult] {
        
         self.searchPages = jsonPhotosList.photos?.pages
         self.searchTotal = jsonPhotosList.photos?.total
@@ -80,6 +81,7 @@ class ImageDataStore {
             self.imageSearchResultCache.append(ImageSearchResult(id: jsonPhoto.id!, owner: jsonPhoto.owner!, secret: jsonPhoto.secret!, server: jsonPhoto.server!, farm: jsonPhoto.farm!, title: jsonPhoto.title!, ispublic: jsonPhoto.ispublic!, isfriend: jsonPhoto.isfriend!, isfamily: jsonPhoto.isfamily!, keyword: self.searchKeyword))
         }
         print("Cache Contains: %@", self.imageSearchResultCache.count)
+        return self.imageSearchResultCache
     }
     
     

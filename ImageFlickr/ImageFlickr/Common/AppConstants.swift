@@ -22,7 +22,7 @@ struct AppConstants {
      */
     struct FlickrUrls {
         // Base Url
-        static let k_BaseServiceUrl = "https://api.flickr.com/services/rest/?"
+        static let k_BaseServiceUrl = "https://api.flickr.com/services/rest/"
         static let k_StaticFlickrBaseUrl = "staticflickr.com"
         
     }

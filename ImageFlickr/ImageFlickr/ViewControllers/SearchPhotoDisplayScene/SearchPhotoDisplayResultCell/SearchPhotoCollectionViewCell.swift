@@ -13,6 +13,11 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var spcImage: UIImageView!
     @IBOutlet weak var spcTextLabel: UILabel!
     
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
     public func setUp(model: ImageSearchResult) {
         spcImage.image = model.photoThumbImage
         spcTextLabel.text = model.title

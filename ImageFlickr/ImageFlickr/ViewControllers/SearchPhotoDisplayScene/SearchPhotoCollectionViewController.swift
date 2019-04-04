@@ -12,7 +12,7 @@ private let reuseIdentifier = "imageSearchResultCell"
 
 class SearchPhotoCollectionViewController: UICollectionViewController, UITextFieldDelegate {
     
-    var imageSearchCache = ImageDataStore.shared.imageSearchResultCache as [ImageSearchResult]
+    var imageSearchCache : [ImageSearchResult] = []
     
     @IBOutlet weak var searchField: UITextField!
     
@@ -24,9 +24,12 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "imageSearchResultCell")
 
         // Do any additional setup after loading the view.
+        
+        imageSearchCache = ImageDataStore.shared.imageSearchResultCache
+        
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.searchField.delegate = self
@@ -66,12 +69,9 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchPhotoCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageSearchResultCell", for: indexPath) as! SearchPhotoCollectionViewCell
         cell.setUp(model: imageSearchCache[indexPath.row])
         
-    
-        //cell.setUp(viewModel: )
-    
         return cell
     }
 
@@ -110,9 +110,14 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         
         let searchTerm = ImageDataStore.shared.setupSearchUrl(searchKeyword: textField.text!)
         
-        ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (ImageSearchResult) in
-            self.imageSearchCache = ImageSearchResult
-            self.collectionView?.reloadData()
+        ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (imageSearchResults) in
+            self.imageSearchCache = imageSearchResults
+            
+            DispatchQueue.global(qos: .default).async { [weak self] in
+                DispatchQueue.main.async { [weak self] in
+                    self!.collectionView.reloadData()
+                }
+            }
         }
         
         textField.text = ""

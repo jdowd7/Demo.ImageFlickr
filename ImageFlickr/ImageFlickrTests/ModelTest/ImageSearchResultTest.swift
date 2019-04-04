@@ -17,7 +17,7 @@ class ImageSearchResultTest: XCTestCase {
     override func setUp() {
         super.setUp()
         self.testControl_ImgSearchResult_1 = ImageSearchResult(id: "1", owner: "1", secret: "1", server: "1", farm: 1, title: "1", ispublic: 1, isfriend: 1, isfamily: 1, keyword: "1")
-        self.testControl_ImgSearchResultUrl = URL(string: "https://farm1.staticflickr.com/1/1_1.png")
+        self.testControl_ImgSearchResultUrl = URL(string: "https://farm1.staticflickr.com/1/1_1.jpg")
     }
     
     override func tearDown() {
@@ -31,6 +31,7 @@ class ImageSearchResultTest: XCTestCase {
         // Assert
         XCTAssert(imgSearchResult.photoUrl == testControl_ImgSearchResultUrl)
     }
+    
     
     func testImageSearchResult_FetchImage_ShouldReturnValidImage() {
         // Arrange
