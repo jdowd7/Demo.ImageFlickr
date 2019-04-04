@@ -117,19 +117,22 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         //let imageWidth = view.frame.width - (UIEdgeInsets(top: 54.0, left: 24.00, bottom: 54.00, right: 24.0).left * (2 + 1))
         //let widthPerItem = 150 / 2
         
-        return CGSize(width: 150, height: 180)
+        return CGSize(width: 184, height:220)
     }
+ 
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0)
+       // return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0)
+        return UIEdgeInsets(top: 1.0, left: 16.00, bottom: 1.00, right: 16.0)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0).left
+        //return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0).left
+                return UIEdgeInsets(top: 16.0, left: 16.00, bottom: 1.00, right: 16.0).top
     }
     
     // MARK: TextView Delegates
