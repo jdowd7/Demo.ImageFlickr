@@ -82,6 +82,9 @@
                             </connections>
                         </textField>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchField" destination="Mhi-8a-0oZ" id="Aa1-P6-SjI"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zN1-x3-k9u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

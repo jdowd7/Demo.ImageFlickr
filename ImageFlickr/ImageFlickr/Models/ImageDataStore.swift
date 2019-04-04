@@ -16,7 +16,7 @@ class ImageDataStore {
     var searchKeyword: String
     //var imageSearchJSON: Dictionary<String, Any>?
     var imageSearchJSON: PhotoModel?
-    var imageSearchResultCache: [ImageSearchResult]?
+    var imageSearchResultCache: [ImageSearchResult]
     var searchPages: Int?
     var searchTotal: String?
     
@@ -57,7 +57,7 @@ class ImageDataStore {
     }
     
     
-    func executeSearch(searchUrl: URL, finished: @escaping (_ jsonResult: PhotoModel) -> Void) {
+    func executeSearch(searchUrl: URL, finished: @escaping (_ imageSearchResults: [ImageSearchResult]) -> Void) {
         let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: [String: String](), headers: [String: String]())
         networkManager.executeJsonRequest { (json) -> () in
             let jsonPhotos = json
@@ -77,9 +77,9 @@ class ImageDataStore {
         self.imageSearchResultCache = [ImageSearchResult]()
         
         for jsonPhoto in jsonPhotoList {
-            self.imageSearchResultCache?.append(ImageSearchResult(id: jsonPhoto.id!, owner: jsonPhoto.owner!, secret: jsonPhoto.secret!, server: jsonPhoto.server!, farm: jsonPhoto.farm!, title: jsonPhoto.title!, ispublic: jsonPhoto.ispublic!, isfriend: jsonPhoto.isfriend!, isfamily: jsonPhoto.isfamily!, keyword: self.searchKeyword))
+            self.imageSearchResultCache.append(ImageSearchResult(id: jsonPhoto.id!, owner: jsonPhoto.owner!, secret: jsonPhoto.secret!, server: jsonPhoto.server!, farm: jsonPhoto.farm!, title: jsonPhoto.title!, ispublic: jsonPhoto.ispublic!, isfriend: jsonPhoto.isfriend!, isfamily: jsonPhoto.isfamily!, keyword: self.searchKeyword))
         }
-        print("Cache Contains: %@", self.imageSearchResultCache?.count)
+        print("Cache Contains: %@", self.imageSearchResultCache.count)
     }
     
     

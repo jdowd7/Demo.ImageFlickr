@@ -29,7 +29,7 @@ class ImageDataStoreTest: XCTestCase {
         
         //Act
         self.imageDataStore_TestInstance?.executeSearch(searchUrl: url!) { (jsonResult) in
-            self.imageDataStore_TestInstance?.imageSearchJSON = jsonResult
+            self.imageDataStore_TestInstance?.imageSearchResultCache = jsonResult
             expect.fulfill()
         }
         
@@ -45,12 +45,12 @@ class ImageDataStoreTest: XCTestCase {
         
         //Act
         self.imageDataStore_TestInstance?.executeSearch(searchUrl: url!) { (jsonResult) in
-            self.imageDataStore_TestInstance?.imageSearchJSON = jsonResult
+            self.imageDataStore_TestInstance?.imageSearchResultCache = jsonResult
             expect.fulfill()
         }
         
         //Assert
         waitForExpectations(timeout: 90, handler: nil)
-        XCTAssert((self.imageDataStore_TestInstance?.imageSearchResultCache?.count)! > 0)
+        XCTAssert((self.imageDataStore_TestInstance?.imageSearchResultCache.count)! > 0)
     }
 }

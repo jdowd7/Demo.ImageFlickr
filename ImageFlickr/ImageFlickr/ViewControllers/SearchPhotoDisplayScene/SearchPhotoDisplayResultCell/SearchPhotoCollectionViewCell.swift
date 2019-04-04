@@ -13,8 +13,8 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var spcImage: UIImageView!
     @IBOutlet weak var spcTextLabel: UILabel!
     
-    public func setUp(viewModel: SearchPhotoViewModel) {
-        spcImage.image = viewModel.imagePhoto
-        spcTextLabel.text = viewModel.imageTitle
+    public func setUp(model: ImageSearchResult) {
+        spcImage.image = model.photoThumbImage
+        spcTextLabel.text = model.title
     }
 }

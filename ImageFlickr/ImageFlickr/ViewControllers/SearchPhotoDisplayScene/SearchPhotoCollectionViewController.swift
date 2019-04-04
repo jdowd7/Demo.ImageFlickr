@@ -10,7 +10,12 @@ import UIKit
 
 private let reuseIdentifier = "imageSearchResultCell"
 
-class SearchPhotoCollectionViewController: UICollectionViewController {
+class SearchPhotoCollectionViewController: UICollectionViewController, UITextFieldDelegate {
+    
+    var imageSearchCache = ImageDataStore.shared.imageSearchResultCache as [ImageSearchResult]
+    
+    @IBOutlet weak var searchField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +27,20 @@ class SearchPhotoCollectionViewController: UICollectionViewController {
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
+        self.searchField.delegate = self
+        
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.itemSize = CGSize(width: self.collectionView.bounds.width, height: 120)
+        }
+    }
+    
 
     /*
     // MARK: - Navigation
@@ -44,11 +62,13 @@ class SearchPhotoCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0; //collectionView.numberOfItems(inSection: 1)
+        return imageSearchCache.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchPhotoCollectionViewCell
+        cell.setUp(model: imageSearchCache[indexPath.row])
+        
     
         //cell.setUp(viewModel: )
     
@@ -85,5 +105,25 @@ class SearchPhotoCollectionViewController: UICollectionViewController {
     
     }
     */
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        let searchTerm = ImageDataStore.shared.setupSearchUrl(searchKeyword: textField.text!)
+        
+        ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (ImageSearchResult) in
+            self.imageSearchCache = ImageSearchResult
+            self.collectionView?.reloadData()
+        }
+        
+        textField.text = ""
+        textField.resignFirstResponder()
+        
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
 
 }

@@ -44,7 +44,7 @@ struct AppConstants {
         static let k_tags = "tags"
         static let k_tag_mode = "tag_mode"
         static let k_per_page = "per_page"
-        static let k_per_page_value = "50"
+        static let k_per_page_value = "25"
         static let k_page = "page"
         static let k_page_value = "1"
         static let k_format = "format"
