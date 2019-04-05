@@ -10,14 +10,20 @@ import UIKit
 
 class SearchPhotoDetailViewController: UIViewController {
 
-    @IBOutlet weak var searchDetailPhoto: UIButton!
+    @IBOutlet var searchDetailPhoto: UIButton!
     var photoUrl: URL?
+    var selectedImageSearchResult: ImageSearchResult?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        downloadImage(url: self.photoUrl!)
+        //downloadImage(url: self.photoUrl!)
+        setButtonImage(withImage: selectedImageSearchResult!.photoImage!)
+        
     }
     
+    func setButtonImage(withImage: UIImage) -> Void {
+        self.searchDetailPhoto.setImage(withImage, for: .normal)
+    }
 
     func loadPhotoFromUrl() -> UIImage {
         guard let photoData = NSData(contentsOf: self.photoUrl!) else { return UIImage() }

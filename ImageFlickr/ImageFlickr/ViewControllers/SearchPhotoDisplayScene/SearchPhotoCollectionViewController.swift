@@ -127,14 +127,18 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         let spdVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController") as? SearchPhotoDetailViewController
         let navController = UINavigationController(rootViewController: spdVC!)
         
-        spdVC!.photoUrl = imageSearchResult.photoUrl
+        imageSearchResult.fetchLargePhoto(url: imageSearchResult.photoUrl!) { (photoData) in
+            print("fetchedMainImage")
+        }
         
+        spdVC?.selectedImageSearchResult = imageSearchResult
         spdVC!.modalTransitionStyle = .crossDissolve
         spdVC!.modalPresentationStyle = .popover
         navController.pushViewController(spcVC!, animated: true)
         
-        present(navController, animated: true, completion: nil)
+        self.present(navController, animated: true, completion: nil)
         navController.popViewController(animated: true)
+        
         return false
     }
     

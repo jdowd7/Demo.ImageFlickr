@@ -42,18 +42,12 @@ class ImageSearchResult {
         self.photoUrl = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "")
         self.thumbnailPhotoUrl = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "q")
         
-        
-        //fetchPhoto(url: self.photoUrl!) { (photoData) in
-        //    self.photoImage = UIImage(data: photoData)
-        //}
-        
-        //self.photoImage = UIImage(data: fetchPhoto(url: self.photoUrl!) as Data)
-        
+        // fetch thumbnail, no need to fetch large image until selection
         fetchPhoto(url: self.thumbnailPhotoUrl!) { (photoData) in
             self.photoThumbImage = UIImage(data: photoData)
         }
         
-        //self.photoThumbImage = UIImage(data: fetchPhoto(url: self.thumbnailPhotoUrl!) as Data)
+        //sync: self.photoThumbImage = UIImage(data: fetchPhoto(url: self.thumbnailPhotoUrl!) as Data)
     }
     
     // MARK: Instance Methods
@@ -66,7 +60,7 @@ class ImageSearchResult {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
-    // async
+    // async fetch
     func fetchPhoto(url: URL, finished: @escaping (_ photoData: Data) -> Void) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
@@ -77,10 +71,21 @@ class ImageSearchResult {
         }
     }
     
-    // sync
+    // sync fetch
     func fetchPhoto(url: URL) -> NSData {
         guard let data = NSData(contentsOf: url) else { return NSData() }
         return data
+    }
+    
+    // large async fetch on selection
+    public func fetchLargePhoto(url: URL, finished: @escaping (_ photoData: Data) -> Void) {
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            DispatchQueue.main.async() {
+                self.photoImage = UIImage(data: data)
+            }
+        }
     }
 }
 
