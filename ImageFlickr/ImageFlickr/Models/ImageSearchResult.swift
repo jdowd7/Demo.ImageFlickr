@@ -43,9 +43,9 @@ class ImageSearchResult {
         self.thumbnailPhotoUrl = createImageUrl(imgId: id, farmId: farm, secretId: secret, serverId: server, mstzb: "q")
         
         
-        fetchPhoto(url: self.photoUrl!) { (photoData) in
-            self.photoImage = UIImage(data: photoData)
-        }
+        //fetchPhoto(url: self.photoUrl!) { (photoData) in
+        //    self.photoImage = UIImage(data: photoData)
+        //}
         
         //self.photoImage = UIImage(data: fetchPhoto(url: self.photoUrl!) as Data)
         

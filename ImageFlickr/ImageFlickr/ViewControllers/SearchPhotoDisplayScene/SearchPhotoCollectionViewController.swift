@@ -17,6 +17,30 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     
     @IBOutlet weak var searchField: UITextField!
     
+    var largePhotoIndexPath: IndexPath? {
+        didSet {
+            // 2
+            var indexPaths: [IndexPath] = []
+            if let largePhotoIndexPath = largePhotoIndexPath {
+                indexPaths.append(largePhotoIndexPath)
+            }
+            
+            if let oldValue = oldValue {
+                indexPaths.append(oldValue)
+            }
+            // 3
+            collectionView.performBatchUpdates({
+                self.collectionView.reloadItems(at: indexPaths)
+            }) { _ in
+                // 4
+                if let largePhotoIndexPath = self.largePhotoIndexPath {
+                    self.collectionView.scrollToItem(at: largePhotoIndexPath,
+                                                     at: .centeredVertically,
+                                                     animated: true)
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +96,6 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageSearchResultCell", for: indexPath) as! SearchPhotoCollectionViewCell
         cell.setUp(model: imageSearchCache[indexPath.row])
-        cell.backgroundColor = .lightGray
         
         return cell
     }
@@ -86,27 +109,73 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     }
     */
 
-    /*
+    
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
+        
+      /*  if largePhotoIndexPath == indexPath {
+            largePhotoIndexPath = nil
+        } else {
+            largePhotoIndexPath = indexPath
+        }
+        
+        return false
+      */
+        let imageSearchResult =  imageSearchCache[indexPath.row]
+        
+        let spcVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoCollectionViewController") as? SearchPhotoCollectionViewController
+        let spdVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController") as? SearchPhotoDetailViewController
+        let navController = UINavigationController(rootViewController: spdVC!)
+        
+        spdVC!.photoUrl = imageSearchResult.photoUrl
+        
+        spdVC!.modalTransitionStyle = .crossDissolve
+        spdVC!.modalPresentationStyle = .popover
+        navController.pushViewController(spcVC!, animated: true)
+        
+        present(navController, animated: true, completion: nil)
+        navController.popViewController(animated: true)
+        return false
     }
-    */
+    
 
-    /*
+    
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
         return false
     }
 
     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
+        return true
     }
 
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+        /*
+        let storyboard = UIStoryboard(name: "SearchPhotoDetailViewController", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController")
+        controller.searchPhoto
+        
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .overCurrentContext
+         self.present(controller, animated: true, completion: nil)
+        
+        let imageSearchResult =  imageSearchCache[indexPath.row]
+        
+        let spcVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoCollectionViewController") as? SearchPhotoCollectionViewController
+        let spdVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController") as? SearchPhotoDetailViewController
+        let navController = UINavigationController(rootViewController: spdVC!)
+        
+        spdVC!.photoUrl = imageSearchResult.photoUrl
+        
+        spdVC!.modalTransitionStyle = .crossDissolve
+        spdVC!.modalPresentationStyle = .popover
+        navController.pushViewController(spcVC!, animated: true)
+        
+        present(navController, animated: true, completion: nil)
+         */
     }
-    */
+    
     
     // MARK: UICollectionViewDelegateFlowLayout
     
@@ -116,23 +185,20 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         
         //let imageWidth = view.frame.width - (UIEdgeInsets(top: 54.0, left: 24.00, bottom: 54.00, right: 24.0).left * (2 + 1))
         //let widthPerItem = 150 / 2
-        
-        return CGSize(width: 184, height:220)
+        return CGSize(width: 184, height:230)
     }
  
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-       // return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0)
         return UIEdgeInsets(top: 1.0, left: 16.00, bottom: 1.00, right: 16.0)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        //return UIEdgeInsets(top: 24.0, left: 24.00, bottom: 24.00, right: 24.0).left
-                return UIEdgeInsets(top: 16.0, left: 16.00, bottom: 1.00, right: 16.0).top
+                return UIEdgeInsets(top: 1.0, left: 16.00, bottom: 16.00, right: 16.0).top
     }
     
     // MARK: TextView Delegates
