@@ -23,13 +23,5 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
         spcImage.image = model.photoThumbImage
         spcTextLabel.text = model.title
         spcTextLabel.textColor = .black
-        /*
-            DispatchQueue.global(qos: .default).async { [weak self] in
-            DispatchQueue.main.async { [weak self] in
-                self!.spcImage.image = model.photoThumbImage
-                self!.spcTextLabel.text = model.title
-            }
-        }
-        */
     }
 }

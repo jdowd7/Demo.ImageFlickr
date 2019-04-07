@@ -51,10 +51,11 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         // Register cell classes
         //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "imageSearchResultCell")
 
-        // Do any additional setup after loading the view.
-        
         imageSearchCache = ImageDataStore.shared.imageSearchResultCache
         
+        //self.refreshControl?.addTarget(self, action: #selector(SearchPhotoCollectionViewController.loadUp), forControlEvents: .ValueChanged)
+        
+        collectionView.register(UINib(nibName: "SearchDetailPhotoViewController", bundle: Bundle.main), forCellWithReuseIdentifier: "SearchDetailPhotoViewController")
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.searchField.delegate = self
@@ -113,36 +114,39 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         
-      /*  if largePhotoIndexPath == indexPath {
-            largePhotoIndexPath = nil
-        } else {
-            largePhotoIndexPath = indexPath
-        }
-        
-        return false
-      */
         let imageSearchResult =  imageSearchCache[indexPath.row]
         
-        let spcVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoCollectionViewController") as? SearchPhotoCollectionViewController
-        let spdVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController") as? SearchPhotoDetailViewController
-        let navController = UINavigationController(rootViewController: spdVC!)
+        /* async image get
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let spcVC = storyboard.instantiateViewController(withIdentifier: "SearchPhotoCollectionViewController") as? SearchPhotoCollectionViewController
+        let sdpVC = storyboard.instantiateViewController(withIdentifier: "SearchDetailPhotoViewController") as? SearchDetailPhotoViewController
         
-        imageSearchResult.fetchLargePhoto(url: imageSearchResult.photoUrl!) { (photoData) in
+        
+         imageSearchResult.fetchLargePhoto(url: imageSearchResult.photoUrl!) { (photoData) in
             print("fetchedMainImage")
-        }
+         }
         
-        spdVC?.selectedImageSearchResult = imageSearchResult
-        spdVC!.modalTransitionStyle = .crossDissolve
-        spdVC!.modalPresentationStyle = .popover
-        navController.pushViewController(spcVC!, animated: true)
+        sdpVC?.searchImage = imageSearchResult.photoImage
+        let navController = UINavigationController(rootViewController: spcVC!)
+    
+        sdpVC!.modalTransitionStyle = .crossDissolve
+        sdpVC!.modalPresentationStyle = .popover
+        navController.pushViewController(sdpVC!, animated: true)
+        
         
         self.present(navController, animated: true, completion: nil)
         navController.popViewController(animated: true)
+        */
         
-        return false
+        
+        let searchImage = UIImage(data: imageSearchResult.fetchPhoto(url: imageSearchResult.photoUrl!) as Data)
+        
+        let sdpVC = SearchDetailPhotoViewController()
+        sdpVC.searchImage = searchImage
+        present(sdpVC, animated: true, completion: nil)
+        
+        return true
     }
-    
-
     
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
@@ -154,30 +158,7 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     }
 
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-        /*
-        let storyboard = UIStoryboard(name: "SearchPhotoDetailViewController", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController")
-        controller.searchPhoto
-        
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .overCurrentContext
-         self.present(controller, animated: true, completion: nil)
-        
-        let imageSearchResult =  imageSearchCache[indexPath.row]
-        
-        let spcVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoCollectionViewController") as? SearchPhotoCollectionViewController
-        let spdVC = storyboard!.instantiateViewController(withIdentifier: "SearchPhotoDetailViewController") as? SearchPhotoDetailViewController
-        let navController = UINavigationController(rootViewController: spdVC!)
-        
-        spdVC!.photoUrl = imageSearchResult.photoUrl
-        
-        spdVC!.modalTransitionStyle = .crossDissolve
-        spdVC!.modalPresentationStyle = .popover
-        navController.pushViewController(spcVC!, animated: true)
-        
-        present(navController, animated: true, completion: nil)
-         */
+
     }
     
     

@@ -91,38 +91,47 @@
             </objects>
             <point key="canvasLocation" x="863.768115942029" y="347.54464285714283"/>
         </scene>
-        <!--Search Photo Detail View Controller-->
-        <scene sceneID="CVU-7F-O9B">
+        <!--Search Detail Photo View Controller-->
+        <scene sceneID="woU-5D-MOs">
             <objects>
-                <viewController storyboardIdentifier="SearchPhotoDetailViewController" id="hhH-FE-xAs" customClass="SearchPhotoDetailViewController" customModule="ImageFlickr" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" opaque="NO" contentMode="scaleToFill" id="tKb-gK-V6z">
+                <viewController storyboardIdentifier="SearchDetailPhotoViewController" id="uGl-tV-urP" customClass="SearchDetailPhotoViewController" customModule="ImageFlickr" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XbR-v1-159">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PmP-TU-M4d">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QLJ-cE-a3k">
                                 <rect key="frame" x="20" y="44" width="374" height="818"/>
-                                <connections>
-                                    <action selector="pressMeDown:" destination="hhH-FE-xAs" eventType="touchUpInside" id="INq-02-hb6"/>
-                                </connections>
-                            </button>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WSG-IA-0Hh">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="818"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="WSG-IA-0Hh" secondAttribute="trailing" id="Dih-nV-Q6N"/>
+                                    <constraint firstItem="WSG-IA-0Hh" firstAttribute="top" secondItem="QLJ-cE-a3k" secondAttribute="top" id="RbX-QI-FQk"/>
+                                    <constraint firstAttribute="bottom" secondItem="WSG-IA-0Hh" secondAttribute="bottom" id="Sge-9o-BCa"/>
+                                    <constraint firstItem="WSG-IA-0Hh" firstAttribute="centerY" secondItem="QLJ-cE-a3k" secondAttribute="centerY" id="cGL-bV-V4F"/>
+                                    <constraint firstItem="WSG-IA-0Hh" firstAttribute="centerX" secondItem="QLJ-cE-a3k" secondAttribute="centerX" id="cY6-Ta-BkL"/>
+                                    <constraint firstItem="WSG-IA-0Hh" firstAttribute="leading" secondItem="QLJ-cE-a3k" secondAttribute="leading" id="t2T-zE-1az"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="PmP-TU-M4d" firstAttribute="leading" secondItem="HH5-aq-OuP" secondAttribute="leading" constant="20" id="35Y-YR-2AE"/>
-                            <constraint firstItem="PmP-TU-M4d" firstAttribute="bottom" secondItem="HH5-aq-OuP" secondAttribute="bottom" id="4Gw-Yq-HPP"/>
-                            <constraint firstItem="HH5-aq-OuP" firstAttribute="trailing" secondItem="PmP-TU-M4d" secondAttribute="trailing" constant="20" id="8nE-R3-v4e"/>
-                            <constraint firstItem="PmP-TU-M4d" firstAttribute="top" secondItem="HH5-aq-OuP" secondAttribute="top" id="V3f-AK-ecS"/>
+                            <constraint firstItem="QLJ-cE-a3k" firstAttribute="trailing" secondItem="XbR-v1-159" secondAttribute="trailingMargin" id="2gt-pH-qCC"/>
+                            <constraint firstItem="QLJ-cE-a3k" firstAttribute="leading" secondItem="XbR-v1-159" secondAttribute="leadingMargin" id="4RK-UG-Dm3"/>
+                            <constraint firstItem="QLJ-cE-a3k" firstAttribute="bottom" secondItem="Qhg-iX-3u9" secondAttribute="bottom" id="rBN-Ly-ImW"/>
+                            <constraint firstItem="QLJ-cE-a3k" firstAttribute="top" secondItem="Qhg-iX-3u9" secondAttribute="top" id="x0v-Em-NRs"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="HH5-aq-OuP"/>
+                        <viewLayoutGuide key="safeArea" id="Qhg-iX-3u9"/>
                     </view>
-                    <connections>
-                        <outlet property="searchDetailPhoto" destination="PmP-TU-M4d" id="Tfg-6z-U12"/>
-                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dIv-Zm-ABd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MdJ-ne-khr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1921.7391304347827" y="352.90178571428572"/>
+            <point key="canvasLocation" x="1845" y="348"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IPh-Cv-KvL">

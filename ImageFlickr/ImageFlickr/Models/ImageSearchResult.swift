@@ -72,7 +72,7 @@ class ImageSearchResult {
     }
     
     // sync fetch
-    func fetchPhoto(url: URL) -> NSData {
+    public func fetchPhoto(url: URL) -> NSData {
         guard let data = NSData(contentsOf: url) else { return NSData() }
         return data
     }
