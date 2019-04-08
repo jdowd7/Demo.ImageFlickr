@@ -83,7 +83,6 @@ class searchTextFieldCustom: UITextField, UITableViewDelegate, UITableViewDataSo
     // MARK: TextView Obj-c Methods
     @objc open func textFieldDidChange(){
         print("Text changed ...")
-        //addData()
         updateSearchHistoryTable()
         
     }

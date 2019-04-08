@@ -31,6 +31,8 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         collectionView.register(UINib(nibName: "SearchDetailPhotoViewController", bundle: Bundle.main), forCellWithReuseIdentifier: "SearchDetailPhotoViewController")
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        
+        self.searchField.smartInsertDeleteType = .no
         self.searchField.delegate = self
         
     }
@@ -168,6 +170,12 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let allowedCharacters = CharacterSet.letters
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
     }
     
 

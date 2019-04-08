@@ -40,12 +40,7 @@ class ImageDataStore {
      &nojsoncallback=1
      */
     func setupSearchUrl(keyword: String) -> String {
-        if keyword.isEmpty {
-            self.searchKeyword  = "Stop"
-        } else {
-            self.searchKeyword = keyword
-            ImageFlickrAppConfig.shared.storeSearchKeyword(keyword: self.searchKeyword)
-        }
+        validation(keyword)
         let baseUrl = String(format: "%@", AppConstants.FlickrUrls.k_BaseServiceUrl)
         let methodParam = String(format: "?%@=%@", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
         let apiKeyParam = String(format: "&api_key=%@", AppConstants.FlickrKeys.k_api_key)
@@ -90,6 +85,16 @@ class ImageDataStore {
         print("Cache Contains: %@", self.imageSearchResultCache.count)
         return self.imageSearchResultCache
     }
+    
+    fileprivate func validation(_ keyword: String) {
+        if keyword.trimmingCharacters(in: .whitespaces).isEmpty {
+            self.searchKeyword  = "Stop"
+        } else {
+            self.searchKeyword = keyword
+            ImageFlickrAppConfig.shared.storeSearchKeyword(keyword: self.searchKeyword)
+        }
+    }
+    
     
     
 }
