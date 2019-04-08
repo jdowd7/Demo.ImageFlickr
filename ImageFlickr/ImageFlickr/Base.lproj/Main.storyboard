@@ -72,7 +72,7 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="u4s-Pf-xTj">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search Keyword" textAlignment="center" minimumFontSize="17" id="Mhi-8a-0oZ">
+                        <textField key="titleView" opaque="NO" contentMode="scaleToFill" restorationIdentifier="searchTextFieldCustom" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search Keyword" textAlignment="center" minimumFontSize="17" id="Mhi-8a-0oZ" customClass="searchTextFieldCustom" customModule="ImageFlickr" customModuleProvider="target">
                             <rect key="frame" x="99" y="7" width="216" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
