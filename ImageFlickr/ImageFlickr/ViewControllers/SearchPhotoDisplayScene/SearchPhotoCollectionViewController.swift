@@ -145,7 +145,7 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         activityIndicator.frame = textField.bounds
         activityIndicator.startAnimating()
         
-        let searchTerm = ImageDataStore.shared.setupSearchUrl(searchKeyword: textField.text!)
+        let searchTerm = ImageDataStore.shared.setupSearchUrl(keyword: textField.text!)
         
         ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (imageSearchResults) in
             DispatchQueue.global(qos: .default).async { [weak self] in

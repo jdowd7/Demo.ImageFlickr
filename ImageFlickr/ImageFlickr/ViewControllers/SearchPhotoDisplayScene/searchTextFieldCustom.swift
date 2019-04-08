@@ -100,6 +100,7 @@ class searchTextFieldCustom: UITextField, UITableViewDelegate, UITableViewDataSo
     
     @objc open func textFieldDidEndEditingOnExit() {
         print("End on Exit")
+        tableView?.isHidden = true
     }
     
     // MARK: TableViewDataSource Delegate Methods

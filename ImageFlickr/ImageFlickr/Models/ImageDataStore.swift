@@ -39,14 +39,17 @@ class ImageDataStore {
      &format=json
      &nojsoncallback=1
      */
-    func setupSearchUrl(searchKeyword: String) -> String {
-        self.searchKeyword = searchKeyword
-        ImageFlickrAppConfig.shared.storeSearchKeyword(keyword: searchKeyword)
-        
+    func setupSearchUrl(keyword: String) -> String {
+        if keyword.isEmpty {
+            self.searchKeyword  = "Stop"
+        } else {
+            self.searchKeyword = keyword
+            ImageFlickrAppConfig.shared.storeSearchKeyword(keyword: self.searchKeyword)
+        }
         let baseUrl = String(format: "%@", AppConstants.FlickrUrls.k_BaseServiceUrl)
         let methodParam = String(format: "?%@=%@", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
         let apiKeyParam = String(format: "&api_key=%@", AppConstants.FlickrKeys.k_api_key)
-        let tagsParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tags, searchKeyword)
+        let tagsParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tags, self.searchKeyword)
         let tagModeParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tag_mode, "")
         let perPageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_per_page, AppConstants.FlickrApiParams.k_per_page_value)
         let pageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_page, AppConstants.FlickrApiParams.k_page_value)

@@ -20,8 +20,10 @@ class ImageFlickrAppConfig {
     }
     
     public func storeSearchKeyword(keyword: String) -> Void {
-        self.searchHistoryCache?.append(keyword)
-        self.saveSearchHistory()
+        if !(self.searchHistoryCache?.contains(keyword))! {
+            self.searchHistoryCache?.append(keyword)
+            self.saveSearchHistory()
+        }
     }
     
     func loadSearchHistory() -> [String] {
