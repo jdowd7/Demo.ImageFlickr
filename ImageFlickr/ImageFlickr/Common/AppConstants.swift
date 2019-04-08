@@ -52,4 +52,8 @@ struct AppConstants {
         static let k_nojsoncallback = "nojsoncallback"
         static let k_nojsoncallback_yes = "1"
     }
+    // MARK: Search History Keywords
+    struct AppConfigConstants {
+        static let k_searchHistoryCache = "imageFlickrSearchHistory"
+    }
 }

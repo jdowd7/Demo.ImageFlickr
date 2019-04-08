@@ -14,7 +14,6 @@ class ImageDataStore {
     static let shared = ImageDataStore()
     var decoder: JSONDecoder
     var searchKeyword: String
-    //var imageSearchJSON: Dictionary<String, Any>?
     var imageSearchJSON: PhotoModel?
     var imageSearchResultCache: [ImageSearchResult]
     var searchPages: Int?
@@ -42,6 +41,7 @@ class ImageDataStore {
      */
     func setupSearchUrl(searchKeyword: String) -> String {
         self.searchKeyword = searchKeyword
+        ImageFlickrAppConfig.shared.storeSearchKeyword(keyword: searchKeyword)
         
         let baseUrl = String(format: "%@", AppConstants.FlickrUrls.k_BaseServiceUrl)
         let methodParam = String(format: "?%@=%@", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
@@ -61,6 +61,8 @@ class ImageDataStore {
         let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: [String: String](), headers: [String: String]())
         networkManager.executeJsonRequest { (json) -> () in
             let jsonPhotos = json
+            if jsonPhotos.stat != "ok" { return }
+            
             self.imageSearchJSON = jsonPhotos
             let processedResults = self.processImages(jsonPhotosList: jsonPhotos)
             finished(processedResults)
@@ -72,6 +74,8 @@ class ImageDataStore {
        
         self.searchPages = jsonPhotosList.photos?.pages
         self.searchTotal = jsonPhotosList.photos?.total
+        
+        if searchTotal == "0" { return [ImageSearchResult]() }
         
         let jsonPhotoList = (jsonPhotosList.photos?.photo)!
         

@@ -20,18 +20,30 @@ class SearchDetailPhotoViewController: UIViewController {
         //setup imageViews
         imageViewBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         imageViewBackground.backgroundColor = UIColor.clear
+        imageViewBackground.isOpaque = false
         imageViewBackground.image = searchImage
-        imageViewBackground.contentMode = UIView.ContentMode.scaleToFill
+        imageViewBackground.contentMode = .scaleAspectFit
+        imageViewBackground.clipsToBounds = true
+        //imageViewBackground.contentMode = .redraw
         
         //setupScroll with imageBounds
         scrollView = UIScrollView(frame: view.bounds)
         scrollView.backgroundColor = UIColor.clear
+        scrollView.isOpaque = false
         scrollView.contentSize = imageViewBackground.bounds.size
         scrollView.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
+        
+        // blur
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         //add views to main view
         scrollView.addSubview(imageViewBackground)
         view.backgroundColor = UIColor.clear
+        view.addSubview(blurEffectView)
+        view.isOpaque = false
         view.addSubview(scrollView)
         
         //setup tap recognizer and fire off dismissVC
@@ -40,13 +52,6 @@ class SearchDetailPhotoViewController: UIViewController {
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(tapGestureRecognizer)
     }
-    
-    /*
-    @objc func imageTapped(img:AnyObject){
-        
-        self.dismiss(animated: true, completion: {});
-    }
-    */
     
     @objc func imageTapped(_ sender: UITapGestureRecognizer){
         self.dismiss(animated: true, completion: {});

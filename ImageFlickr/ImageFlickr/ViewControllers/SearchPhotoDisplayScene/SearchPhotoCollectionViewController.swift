@@ -17,40 +17,13 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     
     @IBOutlet weak var searchField: UITextField!
     
-    var largePhotoIndexPath: IndexPath? {
-        didSet {
-            // 2
-            var indexPaths: [IndexPath] = []
-            if let largePhotoIndexPath = largePhotoIndexPath {
-                indexPaths.append(largePhotoIndexPath)
-            }
-            
-            if let oldValue = oldValue {
-                indexPaths.append(oldValue)
-            }
-            // 3
-            collectionView.performBatchUpdates({
-                self.collectionView.reloadItems(at: indexPaths)
-            }) { _ in
-                // 4
-                if let largePhotoIndexPath = self.largePhotoIndexPath {
-                    self.collectionView.scrollToItem(at: largePhotoIndexPath,
-                                                     at: .centeredVertically,
-                                                     animated: true)
-                }
-            }
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "imageSearchResultCell")
-
+        
+        ImageFlickrAppConfig.shared
         imageSearchCache = ImageDataStore.shared.imageSearchResultCache
         
         //self.refreshControl?.addTarget(self, action: #selector(SearchPhotoCollectionViewController.loadUp), forControlEvents: .ValueChanged)
@@ -116,29 +89,6 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         
         let imageSearchResult =  imageSearchCache[indexPath.row]
         
-        /* async image get
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let spcVC = storyboard.instantiateViewController(withIdentifier: "SearchPhotoCollectionViewController") as? SearchPhotoCollectionViewController
-        let sdpVC = storyboard.instantiateViewController(withIdentifier: "SearchDetailPhotoViewController") as? SearchDetailPhotoViewController
-        
-        
-         imageSearchResult.fetchLargePhoto(url: imageSearchResult.photoUrl!) { (photoData) in
-            print("fetchedMainImage")
-         }
-        
-        sdpVC?.searchImage = imageSearchResult.photoImage
-        let navController = UINavigationController(rootViewController: spcVC!)
-    
-        sdpVC!.modalTransitionStyle = .crossDissolve
-        sdpVC!.modalPresentationStyle = .popover
-        navController.pushViewController(sdpVC!, animated: true)
-        
-        
-        self.present(navController, animated: true, completion: nil)
-        navController.popViewController(animated: true)
-        */
-        
-        
         let searchImage = UIImage(data: imageSearchResult.fetchPhoto(url: imageSearchResult.photoUrl!) as Data)
         
         let sdpVC = SearchDetailPhotoViewController()
@@ -190,13 +140,21 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
+        textField.addSubview(activityIndicator)
+        activityIndicator.frame = textField.bounds
+        activityIndicator.startAnimating()
+        
         let searchTerm = ImageDataStore.shared.setupSearchUrl(searchKeyword: textField.text!)
         
         ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (imageSearchResults) in
-            self.imageSearchCache = imageSearchResults
-            
             DispatchQueue.global(qos: .default).async { [weak self] in
                 DispatchQueue.main.async { [weak self] in
+                    
+                    self!.imageSearchCache = imageSearchResults
+                    
+                    activityIndicator.removeFromSuperview()
+                    
                     self!.collectionView.reloadData()
                 }
             }

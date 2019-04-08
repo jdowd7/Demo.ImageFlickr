@@ -19,8 +19,7 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     public func setUp(model: ImageSearchResult) {
-        
-        spcImage.image = model.photoThumbImage
+        spcImage.image = model.photoThumbImage ?? UIImage(data: model.fetchPhoto(url: model.thumbnailPhotoUrl!) as Data)
         spcTextLabel.text = model.title
         spcTextLabel.textColor = .black
     }
