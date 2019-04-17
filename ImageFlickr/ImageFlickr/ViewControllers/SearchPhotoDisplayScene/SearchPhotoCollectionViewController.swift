@@ -14,6 +14,8 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
     
     var imageSearchCache : [ImageSearchResult] = []
     private let reuseIdentifier = "imageSearchResultCell"
+    private var pageCount = 1
+    private var keyword = ""
     
     @IBOutlet weak var searchField: UITextField!
     
@@ -74,6 +76,33 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         cell.setUp(model: imageSearchCache[indexPath.row])
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == imageSearchCache.count - 1 {
+            pageCount+=1
+            loadTheNextPage()
+        }
+        
+        
+    }
+    
+    // make a call for the next page and append to the collection
+    func loadTheNextPage() -> Void {
+        let searchTerm = ImageDataStore.shared.setupSearchUrl(keyword: self.keyword, pageNumber: self.pageCount)
+        
+        ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (imageSearchResults) in
+            DispatchQueue.global(qos: .default).async { [weak self] in
+                DispatchQueue.main.async { [weak self] in
+                    
+                    for result in imageSearchResults {
+                        self!.imageSearchCache.append(result)
+                    }
+        
+                    self!.collectionView.reloadData()
+                }
+            }
+        }
     }
 
     // MARK: UICollectionViewDelegate
@@ -147,7 +176,7 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
         activityIndicator.frame = textField.bounds
         activityIndicator.startAnimating()
         
-        let searchTerm = ImageDataStore.shared.setupSearchUrl(keyword: textField.text!)
+        let searchTerm = ImageDataStore.shared.setupSearchUrl(keyword: textField.text!, pageNumber: self.pageCount)
         
         ImageDataStore.shared.executeSearch(searchUrl: URL(string: searchTerm)!) { (imageSearchResults) in
             DispatchQueue.global(qos: .default).async { [weak self] in
@@ -162,6 +191,7 @@ class SearchPhotoCollectionViewController: UICollectionViewController, UITextFie
             }
         }
         
+        keyword = textField.text!
         textField.text = ""
         textField.resignFirstResponder()
         
