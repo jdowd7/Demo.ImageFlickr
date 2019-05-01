@@ -39,7 +39,7 @@ class ImageDataStore {
      &format=json
      &nojsoncallback=1
      */
-    func setupSearchUrl(keyword: String) -> String {
+    func setupSearchUrl(keyword: String, pageNumber: Int) -> String {
         validation(keyword)
         let baseUrl = String(format: "%@", AppConstants.FlickrUrls.k_BaseServiceUrl)
         let methodParam = String(format: "?%@=%@", AppConstants.FlickrApiParams.k_method_param, AppConstants.FlickrApiParams.k_FlickrPhotosSearch)
@@ -47,7 +47,7 @@ class ImageDataStore {
         let tagsParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tags, self.searchKeyword)
         let tagModeParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_tag_mode, "")
         let perPageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_per_page, AppConstants.FlickrApiParams.k_per_page_value)
-        let pageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_page, AppConstants.FlickrApiParams.k_page_value)
+        let pageParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_page, String(pageNumber)) //AppConstants.FlickrApiParams.k_page_value)
         let formatParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_format, AppConstants.FlickrApiParams.k_format_json)
         let noJsonCallbackParam = String(format: "&%@=%@", AppConstants.FlickrApiParams.k_nojsoncallback, AppConstants.FlickrApiParams.k_nojsoncallback_yes)
         
