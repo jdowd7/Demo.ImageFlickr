@@ -30,7 +30,7 @@ struct Photos : Codable {
     let page : Int?
     let pages : Int?
     let perpage : Int?
-    let total : String?
+    let total : Int?
     let photo : [Photo]?
     
     enum CodingKeys: String, CodingKey {
@@ -47,7 +47,7 @@ struct Photos : Codable {
         page = try values.decodeIfPresent(Int.self, forKey: .page)
         pages = try values.decodeIfPresent(Int.self, forKey: .pages)
         perpage = try values.decodeIfPresent(Int.self, forKey: .perpage)
-        total = try values.decodeIfPresent(String.self, forKey: .total)
+        total = try values.decodeIfPresent(Int.self, forKey: .total)
         photo = try values.decodeIfPresent([Photo].self, forKey: .photo)
     }
     
