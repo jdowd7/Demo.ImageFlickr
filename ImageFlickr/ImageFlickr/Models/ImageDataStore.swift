@@ -17,7 +17,7 @@ class ImageDataStore {
     var imageSearchJSON: PhotoModel?
     var imageSearchResultCache: [ImageSearchResult]
     var searchPages: Int?
-    var searchTotal: String?
+    var searchTotal: Int?
     
     init() {
         self.decoder = JSONDecoder()
@@ -25,7 +25,7 @@ class ImageDataStore {
         self.imageSearchResultCache = [ImageSearchResult]()
         //self.imageSearchJSON = Photos
         self.searchPages = 0
-        self.searchTotal = ""
+        self.searchTotal = 0
     }
     
     /* Search Photos by Keyword Docs
@@ -56,7 +56,7 @@ class ImageDataStore {
     
     
     func executeSearch(searchUrl: URL, finished: @escaping (_ imageSearchResults: [ImageSearchResult]) -> Void) {
-        let networkManager = NetworkManager(url: searchUrl, httpMethod: "GET", params: [String: String](), headers: [String: String]())
+        let networkManager = NetworkManager(url: searchUrl, httpMethod: "POST", params: [String: String](), headers: [String: String]())
         networkManager.executeJsonRequest { (json) -> () in
             let jsonPhotos = json
             if jsonPhotos.stat != "ok" { return }
@@ -73,7 +73,7 @@ class ImageDataStore {
         self.searchPages = jsonPhotosList.photos?.pages
         self.searchTotal = jsonPhotosList.photos?.total
         
-        if searchTotal == "0" { return [ImageSearchResult]() }
+        if searchTotal == 0 { return [ImageSearchResult]() }
         
         let jsonPhotoList = (jsonPhotosList.photos?.photo)!
         

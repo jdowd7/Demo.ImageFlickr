@@ -48,11 +48,25 @@ class NetworkManager {
                     let jsonDic = try jsonDecoder.decode(PhotoModel.self, from: responseData)
                 
                     finished(jsonDic)
-            } catch {
-                print("Error on decoder")
-            }
- 
+						} catch let error {
+							if let dError = error as? DecodingError {
+								switch dError {
+								case .typeMismatch(let key, let value):
+									print("error \(key), value \(value) and ERROR: \(error.localizedDescription)")
+								case .valueNotFound(let key, let value):
+									print("error \(key), value \(value) and ERROR: \(error.localizedDescription)")
+								case .keyNotFound(let key, let value):
+									print("error \(key), value \(value) and ERROR: \(error.localizedDescription)")
+								case .dataCorrupted(let key):
+									print("error \(key), and ERROR: \(error.localizedDescription)")
+								default:
+									print("ERROR: \(error.localizedDescription)")
+								}
+							}
+							print("Error on decoder")
+						}
         }
+							 
         task.resume()
     }
     
